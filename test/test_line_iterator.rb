@@ -196,7 +196,7 @@ describe "working with pattern-delimited records" do
 
   it "works with a backup buffer" do
     r1 = @i.next_record
-    @i.skip(-(r1.size))
+    @i.skip(-(@i.last_line_number))
     r2 = @i.next_record
     assert_equal r1, r2
   end
