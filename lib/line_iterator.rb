@@ -180,5 +180,15 @@ class LineIterator
     end
   end
   
+  # Skip over records (forward only!!!!)
+  def skip_record(n = 1)
+    begin
+      n.times {self.next_record}
+    rescue StopIteration
+      @done = true
+    end
+  end
+  
+  alias_method :skip_records, :skip_record
     
 end
