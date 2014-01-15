@@ -17,9 +17,10 @@ A simple iterator designed to deal easiy with line-oriented text files.
 
 ## Basic Usage
 
-First, a quick warning:
+First, two quick warnings:
 
-**The record iteration stuff works fine, but I may change the interface to return a smarter object than just an array (so I can pass along, e.g. the starting and ending line numbers in the file for that record).**
+* The record iteration stuff works fine, but I may change the interface to return a smarter object than just an array (so I can pass along, e.g. the starting and ending line numbers in the file for that record).
+* This works fine under MRI, fails hard under Jruby 1.7.9 (Null Pointer exception), and runs fine on jruby 1.7.10 in both 1.9 and 2.0 mode.
 
 
 ### Getting a new iterator
