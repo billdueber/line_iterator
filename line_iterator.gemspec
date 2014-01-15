@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = LineIterator::VERSION
   spec.authors       = ["Bill Dueber"]
   spec.email         = ["bill@dueber.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Provides methods to more easily work with line-oriented text file and records within those files}
+  spec.summary       = %q{Easily work with line-oriented text files}
+  spec.homepage      = "http://github.com/billdueber/line_iterator"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
