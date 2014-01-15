@@ -194,6 +194,12 @@ describe "working with pattern-delimited records" do
     assert_equal "Out of the bones' need to sharpen and the muscles' to stretch,", rec[4]
   end
 
+  it "works with a backup buffer" do
+    r1 = @i.next_record
+    @i.skip(-(r1.size))
+    r2 = @i.next_record
+    assert_equal r1, r2
+  end
 
   it "can use a custom pattern" do
     iter = LineIterator.new(test_data('addresses.txt'))
