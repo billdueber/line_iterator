@@ -116,8 +116,8 @@ Like the line-based commands, the contents of the returned array are already `#c
 
 Note two things:
 
-* There's no `#skip` implemented for recods, and
-* If you mix `#next_record / #each_record` with `#next_line` / `#each_line` / `#skip`, things are going to get *really* screwey. Mixed use is not supported.
+* There's no `#skip` backwards implemented for records; you can use `#skip_record` or `#skip_records(n)` to skip recordsd forward.
+* If you mix `#next_record / #each_record` with `#next_line` / `#each_line` / `#skip`, things are usually going to get *really* screwey. Mixed use is not really supported.
 
 ### Using blank-line delimited records
 
