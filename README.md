@@ -85,7 +85,7 @@ Calling `#skip` just skips the next line. Calling `#skip(num)` will skip forward
 
 **Unlike `#next`, `#skip` will never throw `StopIteration`**. 
 
-If you call `#skip` with a negative number, the LineIterator will attempt to back up via an internal buffer (set at 100 lines). If you try to back up further than the available data allows, you'll get a `RangeError`.  
+If you call `#skip` with a negative number, the LineIterator will attempt to back up via an internal buffer (set at 100 lines). If you try to back up further than the available data allows, you'll get an `IndexError`.  
 
 ~~~ruby
 
@@ -103,7 +103,7 @@ If you call `#skip` with a negative number, the LineIterator will attempt to bac
   
   iter = LineIterator.open('myfile.txt')
   iter.skip(10)
-  iter.skip(-100) #=> RangeError
+  iter.skip(-100) #=> IndexError
   
 ~~~
 

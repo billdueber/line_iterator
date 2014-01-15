@@ -69,7 +69,7 @@ describe "skip backwards" do
   
   it "errors out if you back up past the beginning of the file" do
     @i.skip 2
-    assert_raises(RangeError) {@i.skip(-3)}
+    assert_raises(IndexError) {@i.skip(-3)}
   end
   
   it "can exactly rewind" do
@@ -82,7 +82,7 @@ describe "skip backwards" do
   it "errors out if you back up past the buffer" do
     @i.skip 10
     @i.skip(-5)
-    assert_raises(RangeError) {@i.skip(-6)}
+    assert_raises(IndexError) {@i.skip(-6)}
   end  
 end
 

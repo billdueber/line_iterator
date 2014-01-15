@@ -91,7 +91,7 @@ class LineIterator
   
   def skip_backwards(n)    
     # can we back up?
-    raise RangeError.new, "Tried to skip backwards too far", nil if n > @buffer.size
+    raise IndexError.new, "Tried to skip backwards too far", nil if n > @buffer.size
     n.times { @backup_buffer.unshift @buffer.pop }
     @last_line_number = @backup_buffer[0][1]
   end
