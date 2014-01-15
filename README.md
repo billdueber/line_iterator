@@ -60,7 +60,7 @@ Access the line number of the last returned (or just consumed via `#skip`) line 
   iter.each do |line|
     puts iter.last_line_number
     break
-  end #=> 3, since the 
+  end #=> 3, since the two calls to #next advanced the line number
 
 
   # There's a special iterator, `#each_with_line_number`, to mirror 
@@ -184,7 +184,7 @@ You can subclass `LineIterator` and override the method `#end_of_record(buff)` t
 
 The buffer passed in is the contents of the record so far.
 
-Here's a simple implementation of a subclass whose records all have the same prefix string.
+Here's a simple implementation of a subclass that deals with records that are identified by contiguous lines that all have the same prefix string.
 
 Given the file:
 
@@ -200,11 +200,12 @@ Given the file:
 003 Delta
 ~~~
 
-...we have three records, where the end of record is identified only by the numeric prefix changing from one line to the next.
+...we have three records, where the end of record is identified by the numeric prefix changing from one line to the next (or, for the last record, by the end of the input).
 
 We can easily subclass `LineIterator` to take care of this case.
 
 ~~~ruby
+
   # Subclass to override end_of_record(buff)
   # We introduce a new instance variable to track the most recent prefix
   class PrefixBasedRecordIterator < LineIterator
@@ -231,6 +232,8 @@ We can easily subclass `LineIterator` to take care of this case.
   iter = PrefixBasedRecordIterator.new('prefix_file.txt')
   rec = iter.next_record
     #=> ['001 Red', '001 White', '001 Blue']
+  rec = iter.next_record
+    #=> ['002 One', '002 Two']
 
 ~~~
 
