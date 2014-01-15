@@ -147,8 +147,8 @@ class LineIterator
     end
   end
     
-  
-  def next_record(delim = /\A\s*\n/)
+  # Get the next record and return (as an array of chomp'ed lines)
+  def next_record
     raise StopIteration if self.done
     buff = []
     begin
@@ -167,17 +167,18 @@ class LineIterator
     end
   end
   
-  # Work with records delimited by blank lines
-  def each_record(delim = /\A\s*\n/) 
+  # iterate over records
+  def each_record
     unless block_given?
-      return enum_for(:each_record, delim)
+      return enum_for(:each_record)
     end
     
     begin
       while !self.done
-        yield self.next_record(delim)
+        yield self.next_record
       end
     end
   end
+  
     
 end
