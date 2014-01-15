@@ -190,5 +190,6 @@ class LineIterator
   end
   
   alias_method :skip_records, :skip_record
-    
+  
+  
 end
