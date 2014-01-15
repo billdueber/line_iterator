@@ -8,7 +8,7 @@ A simple iterator designed to deal easiy with line-oriented text files.
 * Methods like #next and #each (aliased to #next_line and #each_line) return the line data with the line endings already `chomp`ed off
 * Skip forward or backwards by lines (limit on skipping backwards)
 * Track line numbers (staring with 1) no matter how you use each_line, next_line, skip (forward and backwards), etc.
-* Allow line-oriented records (where a record is a set of lines separated by a blank line) with the way to determine a record break is easily overridden in subclasses
+* Allow line-oriented records (where a record is a set of lines). The default implementation detends end-of-record as a blank line, but subclassing is easily for other types of line-oriented records.
 
 
 ## Installation
