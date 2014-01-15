@@ -41,6 +41,7 @@ class LineIterator
   end
   
   
+  
   # Override the normal enumerable #next to keep internal track
   # of line numbers
   def next
@@ -56,6 +57,12 @@ class LineIterator
   end
   
   alias_method :next_line, :next
+  
+  # Provide a #peek that takes into account the backup buffer
+  
+  def peek
+    @backup_buffer.empty? ? @base_iterator.peek : @backup_buffer[0]
+  end
   
   
   # Skip n lines (default: 1). Just calls next over and over again,
@@ -131,7 +138,7 @@ class LineIterator
   # EOR status)
   
   def end_of_record(buff)
-    y = @base_iterator.peek
+    y = peek
     if  end_of_record_pattern.match(y[0])
       self.next # eat the next line
       return true

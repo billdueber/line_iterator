@@ -221,7 +221,7 @@ class PrefixBasedRecordIterator < LineIterator
   
   def end_of_record(buff)
     return true if self.done
-    line, line_no = @base_iterator.peek
+    line, line_no = peek
     p = prefix(line)
     if p != @previous_prefix
       @previous_prefix = p
