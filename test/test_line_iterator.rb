@@ -22,6 +22,14 @@ describe "creating a new iterator" do
     i = LineIterator.new(f, :gzip=>true)
     assert_equal 'One', i.next
   end    
+  
+  it "doesn't error on a zero-length file" do
+    f = File.open(test_data('zero_length_file.txt'))
+    f.each do |l|
+      assert(false) # should never be called
+    end
+  end
+    
 end
 
 describe "skip forward" do
@@ -36,11 +44,13 @@ describe "skip forward" do
   
   it "skips forward N" do
     @i.skip(5)
+    assert_equal 5, @i.last_line_number
     assert_equal 'Six', @i.next
   end
   
   it "skips to the end and will then raise stopiteration on next call" do
     @i.skip(100)
+    assert_equal 12, @i.last_line_number
     assert_raises(StopIteration) { @i.next }
   end
   
@@ -73,9 +83,14 @@ describe "skip backwards" do
     @i.skip 10
     @i.skip(-5)
     assert_raises(RangeError) {@i.skip(-6)}
+  end  
+end
+
+describe "throwing Errors" do
+  it "throws StopIteration when #next is called too many times" do
+    @i = LineIterator.new(test_data('numbers.txt'))
+    assert_raises(StopIteration) { 20.times{@i.next}}
   end
-  
-  
 end
 
 
@@ -109,10 +124,31 @@ describe "maintain line number" do
     assert_equal 3, @i.last_line_number
   end
     
+  it "stays correct on mixed usage" do
+    @i.next
+    @i.next
+    assert_equal 2, @i.last_line_number
+    @i.each do |line|
+      assert_equal 3, @i.last_line_number
+      break
+    end 
+  end
+  
+  it "correctly resets when skipping backwards" do
+    @i.skip(3)
+    assert_equal 3, @i.last_line_number
+    @i.skip(-2)
+    assert_equal 1, @i.last_line_number
+    line = @i.next
+    assert_equal 'Two', line
+    assert_equal 2, @i.last_line_number
+  end
+    
+    
 end
 
 
-describe "working with empty-line-delimited records" do
+describe "working with pattern-delimited records" do
   before do
     @i = LineIterator.new(test_data('poetry.txt'))
   end
@@ -157,7 +193,21 @@ describe "working with empty-line-delimited records" do
     end
     assert_equal "Out of the bones' need to sharpen and the muscles' to stretch,", rec[4]
   end
-  
+
+
+  it "can use a custom pattern" do
+    iter = LineIterator.new(test_data('addresses.txt'))
+    iter.end_of_record_pattern = /\A--+\s*\Z/
+    recs = []
+    iter.each_record do |rec|
+      recs << rec
+    end
+    assert_equal 2, recs.size
+    assert_equal 'Bill Dueber', recs[0][0]
+    assert_equal 'Mike Dueber', recs[1][0]
+  end
+    
+
 end
 
 
@@ -171,7 +221,7 @@ class PrefixBasedRecordIterator < LineIterator
   
   def end_of_record(buff)
     return true if self.done
-    line, line_no = @iter.peek
+    line, line_no = @base_iterator.peek
     p = prefix(line)
     if p != @previous_prefix
       @previous_prefix = p
