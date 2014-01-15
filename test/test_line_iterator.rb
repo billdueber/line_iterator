@@ -59,8 +59,22 @@ describe "skip backwards" do
   
   it "errors out if you back up past the beginning of the file" do
     @i.skip 2
-    assert_raises(RangeError) {@i.skip(-10)}
+    assert_raises(RangeError) {@i.skip(-3)}
   end
+  
+  it "can exactly rewind" do
+    @i.skip 10
+    @i.skip -10
+    assert_equal "One", @i.next
+    assert_equal "Two", @i.next
+  end
+  
+  it "errors out if you back up past the buffer" do
+    @i.skip 10
+    @i.skip(-5)
+    assert_raises(RangeError) {@i.skip(-6)}
+  end
+  
   
 end
 

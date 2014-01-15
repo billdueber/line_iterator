@@ -82,7 +82,7 @@ class LineIterator
   def skip_backwards(n)    
     # can we back up?
     raise RangeError.new, "Tried to skip backwards too far", nil if n > @buffer.size
-    n.times { @backup_buffer.push @buffer.pop }
+    n.times { @backup_buffer.unshift @buffer.pop }
   end
   
   # Override normal #each to track last_line_nunber
