@@ -116,7 +116,7 @@ Like the line-based commands, the contents of the returned array are already `#c
 
 Note two things:
 
-* There's no `#skip` backwards implemented for records; you can use `#skip_record` or `#skip_records(n)` to skip recordsd forward.
+* There's no `#skip` backwards implemented for records; you can use `#skip_record` or `#skip_records(n)` to skip records forward.
 * If you mix `#next_record / #each_record` with `#next_line` / `#each_line` / `#skip`, things are usually going to get *really* screwey. Mixed use is not really supported.
 
 ### Using blank-line delimited records
@@ -145,15 +145,14 @@ y = iter.next_record #=> ['Red Hat', 'Blue Hat']
 iter.last_record_number #=> 2
 
 iter.each_record do |rec|
-  puts rec.inspect
+  puts rec
 end #=> Show the one remaining record, ['by Dr. Seuss']
 
 ~~~
 
 ### Changing the end-of-record pattern
 
-Maybe you have records that are separated by a line with nothing on it but dashes? You can set the pattern used to detect the end of a record by setting
-`#end_of_record_pattern`
+Maybe you have records that are separated by a line with nothing on it but dashes? You can set the pattern used to detect the end of a record by setting `#end_of_record_pattern`
 
 Given the file:
 
@@ -161,7 +160,7 @@ Given the file:
 Bill Dueber
 1234 Sample st.
 Ann Arbor, MI 4813
----
+-----
 Mike Dueber
 1350 N. Nowhere
 St. Paul, MN 55117
@@ -180,7 +179,7 @@ end
 
 ### Sublcassing `LineIterator` for different kinds of records
 
-You can subclass `LineIterator` and override the method `#end_of_record(buff)` to return true when there's an end of record. Usually this invovles calling `line, line_number = @base_iterator.peek` to see what's coming up next.
+You can subclass `LineIterator` and override the method `#end_of_record(buff)` to return true when there's an end of record. Usually this invovles calling `line, line_number = peek` to see what's coming up next.
 
 The buffer passed in is the contents of the record so far.
 
@@ -216,7 +215,7 @@ We can easily subclass `LineIterator` to take care of this case.
   
     def end_of_record(buff)
       return true if self.done
-      line, line_no = @base_iterator.peek
+      line, line_no = peek
       p = prefix(line)
       if p != @previous_prefix
         @previous_prefix = p
