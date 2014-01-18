@@ -231,9 +231,7 @@ class PrefixBasedRecordIterator < LineIterator
     p = prefix(line)
     if p != @previous_prefix
       @previous_prefix = p
-      unless buff.empty?
-        return true
-      end
+      return !buff.empty?
     else
       return false
     end

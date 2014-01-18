@@ -98,7 +98,7 @@ If you call `#skip` with a negative number, the LineIterator will attempt to bac
   iter.last_line_number #=> 3
 
   iter = LineIterator.open('myfile.txt')
-  iter.skip(1_000_000) #=> doesn't raise an error!
+  iter.skip(1_000_000) #=> doesn't raise an error no matter how far you skip
   iter.next #=> StopIteration error
   
   iter = LineIterator.open('myfile.txt')
@@ -110,7 +110,7 @@ If you call `#skip` with a negative number, the LineIterator will attempt to bac
 
 ## Dealing with records
 
-`LineIterator` has a simple line-oriented record interface. By default, it separates files on blank lines (lines with nothing but optional whitespace in them) and returns a "record" that simply consists of an array containing the appropriate lines from the file.
+`LineIterator` has a simple line-oriented record interface. By default, it separates files into records on blank lines (lines with nothing but optional whitespace in them) and returns a "record" that simply consists of an array containing the appropriate lines from the file.
 
 Like the line-based commands, the contents of the returned array are already `#chomp`ed.
 
@@ -219,9 +219,7 @@ We can easily subclass `LineIterator` to take care of this case.
       p = prefix(line)
       if p != @previous_prefix
         @previous_prefix = p
-        unless buff.empty?
-          return true
-        end
+        return  !(buff.empty?)
       else
         return false
       end
