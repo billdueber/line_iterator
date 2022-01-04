@@ -1,5 +1,12 @@
 # LineIterator
 
+----
+
+**Deprecated and archived**. This seemed like a good idea in 2013 for some reason. Writing the specialized code for each use case is just easier, though,
+esp. now that ruby's `Enumerable` has gotten smarter. You can transparently deal with `.gz` files using [billdueber/zinzout](https://github.com/billdueber/zinzout) if that was the appeal.
+
+---
+
 A simple iterator designed to deal easiy with line-oriented text files.
 
 ## Features
